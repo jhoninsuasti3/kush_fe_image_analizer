@@ -1,0 +1,4 @@
+export const getEnv = () => ({
+  VITE_API_URL: '',
+  VITE_API_TOKEN: '',
+});

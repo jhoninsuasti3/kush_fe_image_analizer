@@ -1,11 +1,12 @@
-import { Toaster } from "@/components/ui/sonner";
-import Index from "./pages/Index";
+import { ErrorBoundary } from '@/common/components';
+import { Toaster } from '@/components/ui/sonner';
+import ImageAnalyzerPage from '@/pages/ImageAnalyzerPage';
 
 const App = () => (
-  <>
+  <ErrorBoundary>
     <Toaster />
-    <Index />
-  </>
+    <ImageAnalyzerPage />
+  </ErrorBoundary>
 );
 
 export default App;

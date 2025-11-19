@@ -1,12 +1,13 @@
-import { useState } from "react";
-import { Sparkles, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ImageUpload } from "@/components/ImageUpload";
-import { AnalysisResults } from "@/components/AnalysisResults";
-import { useToast } from "@/hooks/use-toast";
+import { Sparkles, Loader2 } from 'lucide-react';
+import { useState } from 'react';
+
+import { AnalysisResults } from '@/components/AnalysisResults';
+import { ImageUpload } from '@/components/ImageUpload';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 // URL de tu API backend - configurable mediante variable de entorno
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 interface Tag {
   label: string;
@@ -45,11 +46,11 @@ const Index = () => {
     try {
       // Crear FormData para enviar la imagen
       const formData = new FormData();
-      formData.append("image", selectedImage);
+      formData.append('image', selectedImage);
 
       // Llamar a tu API backend
       const response = await fetch(`${API_URL}/api/analyze`, {
-        method: "POST",
+        method: 'POST',
         body: formData,
       });
 
@@ -63,21 +64,24 @@ const Index = () => {
         setTags(data.tags);
         setAnalyzedImage(selectedImage);
         toast({
-          title: "¡Análisis completado!",
+          title: '¡Análisis completado!',
           description: `Se detectaron ${data.tags.length} etiqueta(s).`,
         });
       } else {
         toast({
-          title: "Análisis completado",
-          description: "No se detectaron etiquetas en la imagen.",
+          title: 'Análisis completado',
+          description: 'No se detectaron etiquetas en la imagen.',
         });
       }
     } catch (error) {
-      console.error("Error analyzing image:", error);
+      console.error('Error analyzing image:', error);
       toast({
-        title: "Error en el análisis",
-        description: error instanceof Error ? error.message : "No se pudo analizar la imagen. Intenta nuevamente.",
-        variant: "destructive",
+        title: 'Error en el análisis',
+        description:
+          error instanceof Error
+            ? error.message
+            : 'No se pudo analizar la imagen. Intenta nuevamente.',
+        variant: 'destructive',
       });
     } finally {
       setIsAnalyzing(false);
@@ -91,9 +95,7 @@ const Index = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/10 mb-4">
             <Sparkles className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-4xl font-bold mb-3">
-            Analizador Inteligente de Imágenes
-          </h1>
+          <h1 className="text-4xl font-bold mb-3">Analizador Inteligente de Imágenes</h1>
           <p className="text-lg text-muted-foreground">
             Sube una imagen y descubre su contenido mediante IA
           </p>

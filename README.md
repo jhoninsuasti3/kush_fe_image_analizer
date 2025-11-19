@@ -1,207 +1,312 @@
 # Analizador Inteligente de Contenido de Imágenes
 
-## Descripción del Proyecto
+Aplicación web full-stack que permite a los usuarios subir imágenes y obtener un análisis automático de su contenido mediante inteligencia artificial.
 
-Aplicación web full-stack que permite a los usuarios subir imágenes y obtener un análisis automático de su contenido mediante inteligencia artificial. El sistema utiliza un servicio de IA para identificar y etiquetar elementos presentes en las imágenes, proporcionando etiquetas (tags) con niveles de confianza.
+---
 
-Este proyecto es una prueba técnica de desarrollo full-stack que demuestra habilidades en:
-- Diseño y construcción de APIs backend
-- Desarrollo de interfaces de usuario interactivas
-- Integración con servicios de IA de terceros
-- Gestión profesional de código con Git
-- Documentación clara y estructurada
+## 🚀 Tecnologías
 
-## Tecnologías Utilizadas
+### Core
 
-### Frontend
-- **React** v19.2.0 - Biblioteca de JavaScript para construir interfaces de usuario
-- **TypeScript** v5.9.3 - Superset tipado de JavaScript
-- **Vite** v7.2.2 - Herramienta de construcción y desarrollo rápido
-- **Tailwind CSS** v4.1.17 - Framework CSS utility-first
-- **PostCSS** v8.5.6 - Procesamiento de CSS
+- **React** 19.2.0 + **TypeScript** 5.9.3
+- **Vite** 7.2.2 - Build tool ultrarrápido
+- **Tailwind CSS** 3.4.18 - Styling utility-first
 
-### Herramientas de Desarrollo
-- **ESLint** v9.39.1 - Linter para identificar y reportar patrones en código
-- **TypeScript ESLint** v8.46.3 - Plugin de ESLint para TypeScript
-- **Autoprefixer** v10.4.22 - Plugin de PostCSS para agregar prefijos de navegador
+### UI Components
 
-## Estructura del Proyecto
+- **shadcn/ui** - Componentes base accesibles
+- **Sonner** - Notificaciones toast
+- **Lucide React** - Iconografía
 
-```
-kush_fe_image_analizer/
-├── public/              # Archivos estáticos públicos
-│   ├── robots.txt
-│   └── vite.svg
-├── src/                 # Código fuente de la aplicación
-│   ├── assets/          # Recursos estáticos (imágenes, iconos)
-│   ├── components/      # Componentes React reutilizables
-│   ├── hooks/           # Custom hooks de React
-│   ├── integrations/    # Integraciones con servicios externos
-│   ├── lib/             # Utilidades y funciones auxiliares
-│   ├── pages/           # Componentes de páginas
-│   ├── App.tsx          # Componente principal
-│   ├── App.css          # Estilos del componente principal
-│   ├── main.tsx         # Punto de entrada de la aplicación
-│   └── index.css        # Estilos globales
-├── index.html           # HTML principal
-├── package.json         # Dependencias y scripts del proyecto
-├── tsconfig.json        # Configuración de TypeScript
-├── vite.config.ts       # Configuración de Vite
-├── tailwind.config.js   # Configuración de Tailwind CSS
-├── postcss.config.js    # Configuración de PostCSS
-└── eslint.config.js     # Configuración de ESLint
-```
+### Quality & Testing
 
-## Requisitos Previos
+- **Prettier** 3.6.2 - Formato automático
+- **ESLint** 9.39.1 - Linting profesional
+- **Husky** 9.1.7 - Git hooks
+- **Jest** 30.2.0 - Testing framework
 
-Antes de instalar y ejecutar el proyecto, asegúrate de tener instalado:
+### DevOps
+
+- **GitHub Actions** - CI/CD automático
+- **AWS S3 + CloudFront** - Deployment
+
+---
+
+## 📋 Requisitos Previos
 
 - **Node.js** v18 o superior
-- **npm** v9 o superior (viene incluido con Node.js)
-
-Puedes verificar las versiones instaladas ejecutando:
+- **npm** v9 o superior
 
 ```bash
 node --version
 npm --version
 ```
 
-## Instalación
+---
 
-1. Clona el repositorio:
+## ⚡ Inicio Rápido
 
 ```bash
+# Clonar repositorio
 git clone <URL_DEL_REPOSITORIO>
 cd kush_fe_image_analizer
-```
 
-2. Instala las dependencias del frontend:
-
-```bash
+# Instalar dependencias
 npm install
-```
 
-## Configuración de Variables de Entorno
-
-La aplicación requiere conexión con el backend API. Crea un archivo `.env` en la raíz del proyecto frontend:
-
-```bash
-# .env
-VITE_API_URL=http://localhost:3000
-```
-
-**Nota**: Asegúrate de que el archivo `.env` esté incluido en el `.gitignore` para no exponer configuraciones sensibles.
-
-## Ejecución del Proyecto
-
-### Modo Desarrollo
-
-Para ejecutar el frontend en modo desarrollo con hot reload:
-
-```bash
+# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-La aplicación estará disponible en: `http://localhost:5173`
+La aplicación estará disponible en: **http://localhost:5173**
 
-### Construcción para Producción
+---
 
-Para crear una versión optimizada para producción:
+## 🔧 Configuración
 
-```bash
-npm run build
-```
+### Variables de Entorno
 
-Los archivos compilados se generarán en el directorio `dist/`.
-
-### Vista Previa de la Construcción
-
-Para previsualizar la construcción de producción localmente:
+Crea un archivo `.env` en la raíz:
 
 ```bash
-npm run preview
+VITE_API_URL=http://localhost:3000
+VITE_API_TOKEN=tu-token-opcional
 ```
 
-### Linting
+---
 
-Para ejecutar el linter y verificar la calidad del código:
+## 📦 Scripts Disponibles
 
 ```bash
-npm run lint
+# Desarrollo
+npm run dev                 # Servidor de desarrollo (puerto 5173)
+
+# Build
+npm run build               # Compilar para producción
+npm run preview             # Preview del build
+
+# Quality
+npm run lint                # Fix linting automático
+npm run lint:check          # Solo verificar
+npm run format              # Fix formato automático
+npm run format:check        # Solo verificar formato
+
+# Testing
+npm run test                # Tests en watch mode
+npm run test:ci             # Tests para CI (sin watch)
+npm run test:coverage       # Generar reporte de cobertura
 ```
 
-## Funcionalidades del Frontend
+---
 
-- **Carga de Imágenes**: Interfaz intuitiva para seleccionar y subir archivos de imagen
-- **Indicador de Progreso**: Feedback visual mientras la imagen es procesada
-- **Visualización de Resultados**: Muestra la imagen cargada junto con las etiquetas identificadas
-- **Niveles de Confianza**: Cada etiqueta incluye un porcentaje de confianza del análisis
-- **Diseño Responsivo**: Interfaz adaptable a diferentes tamaños de pantalla
+## 🏗️ Arquitectura del Proyecto
 
-## Integración con el Backend
+```
+src/
+├── common/              # Componentes compartidos (ErrorBoundary, Loading)
+├── components/ui/       # Componentes base (shadcn)
+├── constants/           # Constantes centralizadas (API, mensajes, rutas)
+├── features/            # Features modulares
+│   ├── auth/           # Autenticación (Context, ProtectedRoute)
+│   └── image-analyzer/ # Análisis de imágenes (Upload, Results)
+├── types/               # TypeScript type declarations
+├── utils/               # Utilidades (validators, formatters, helpers)
+├── App.tsx
+└── main.tsx
+```
 
-El frontend se comunica con el backend mediante el endpoint:
+**Arquitectura Feature-First**: Cada feature es autocontenida con sus componentes, hooks, services y tests.
+
+Ver guía completa en: **[docs/GUIA_ARQUITECTURA.md](./docs/GUIA_ARQUITECTURA.md)**
+
+---
+
+## ✨ Características
+
+### Frontend
+
+- ✅ **Drag & Drop** para subir imágenes
+- ✅ **Preview** de imagen cargada
+- ✅ **Análisis con IA** y visualización de tags
+- ✅ **Niveles de confianza** por cada etiqueta
+- ✅ **Diseño responsivo** con Tailwind CSS
+- ✅ **Error boundaries** para manejo robusto de errores
+- ✅ **Loading states** y feedback visual
+
+### Arquitectura Profesional
+
+- ✅ **Quality gates automáticos** (Prettier, ESLint, Husky)
+- ✅ **Pre-commit hooks** - Imposible commitear código con errores
+- ✅ **Sistema de autenticación** preparado (AuthContext + ProtectedRoute)
+- ✅ **CI/CD** con GitHub Actions
+- ✅ **Deploy automático** a AWS S3 + CloudFront
+- ✅ **TypeScript** con tipado gradual
+- ✅ **Estructura modular** escalable
+
+---
+
+## 🔐 Autenticación
+
+El proyecto incluye un sistema de autenticación preparado:
+
+```typescript
+import { useAuth } from '@/features/auth';
+
+const { user, login, logout, isAuthenticated } = useAuth();
+```
+
+**Nota**: Actualmente usa mock data. Conectar con backend real implementando los servicios en `features/auth/services/`.
+
+---
+
+## 🖼️ Integración con Backend
+
+### Endpoint de Análisis
 
 ```
 POST /api/analyze
+Content-Type: multipart/form-data
 ```
 
-**Request**: Envía la imagen como `multipart/form-data`
+**Request**: Imagen como form-data
 
-**Response**: Recibe un JSON con el siguiente formato:
+**Response**:
 
 ```json
 {
   "tags": [
     { "label": "Perro", "confidence": 0.98 },
     { "label": "Golden Retriever", "confidence": 0.95 },
-    { "label": "Parque", "confidence": 0.91 },
-    { "label": "Césped", "confidence": 0.88 }
+    { "label": "Parque", "confidence": 0.91 }
   ]
 }
 ```
 
-## Desarrollo
+---
 
-### Comandos Disponibles
+## 🚀 Deployment
 
-| Comando | Descripción |
-|---------|-------------|
-| `npm run dev` | Inicia el servidor de desarrollo |
-| `npm run build` | Compila el proyecto para producción |
-| `npm run preview` | Previsualiza la construcción de producción |
-| `npm run lint` | Ejecuta el linter de código |
+### Deployment Automático (GitHub Actions)
 
-### Convenciones de Código
+1. **Push a `main`** → Deploy automático a AWS
+2. Ver configuración completa en: **[docs/DEPLOY_AWS.md](./docs/DEPLOY_AWS.md)**
 
-- Utilizar TypeScript para aprovechar el tipado estático
-- Seguir las reglas de ESLint configuradas
-- Mantener componentes pequeños y reutilizables
-- Utilizar hooks personalizados para lógica compartida
-- Documentar funciones complejas con comentarios
+### Secrets Requeridos (GitHub)
 
-## Próximos Pasos
+```
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_S3_BUCKET
+AWS_REGION
+VITE_API_URL
+```
 
-- [ ] Implementar componente de carga de imágenes
-- [ ] Crear servicio de comunicación con el backend
-- [ ] Desarrollar componente de visualización de resultados
-- [ ] Agregar manejo de errores y validaciones
-- [ ] Implementar tests unitarios
-- [ ] Mejorar la experiencia de usuario con animaciones
-- [ ] Optimizar para rendimiento y accesibilidad
+### Build Manual
 
-## Notas de Desarrollo
+```bash
+npm run build
+# Archivos generados en dist/
+```
 
-Este proyecto utiliza Vite como herramienta de construcción, lo que proporciona:
-- Inicio de servidor de desarrollo extremadamente rápido
-- Hot Module Replacement (HMR) instantáneo
-- Optimización de producción con Rollup
-- Soporte nativo para TypeScript
+---
 
-## Licencia
+## 🧪 Testing
 
-Este proyecto es parte de una prueba técnica y es de uso privado.
+```bash
+# Ejecutar tests
+npm run test
 
-## Autor
+# Modo CI (sin watch)
+npm run test:ci
 
-Desarrollado como parte de la prueba técnica Full-Stack con IA
+# Con cobertura
+npm run test:coverage
+```
+
+Los tests están organizados junto al código fuente:
+
+- Archivos `*.test.ts` o `*.test.tsx`
+- Carpetas `__tests__/` para múltiples tests
+
+---
+
+## 📚 Documentación
+
+- **[GUIA_ARQUITECTURA.md](./docs/GUIA_ARQUITECTURA.md)** - Arquitectura y convenciones
+- **[GUIA_TECNICA.md](./docs/GUIA_TECNICA.md)** - Guía técnica completa del proyecto
+- **[DEPLOY_AWS.md](./docs/DEPLOY_AWS.md)** - Guía de deployment a AWS
+
+---
+
+## 🔄 Workflow de Desarrollo
+
+1. **Crear branch**
+
+   ```bash
+   git checkout -b feature/mi-funcionalidad
+   ```
+
+2. **Desarrollar** - Los hooks validan automáticamente
+
+3. **Commit**
+
+   ```bash
+   git commit -m "feat: descripción del cambio"
+   # → Auto-ejecuta: ESLint, Prettier, Tests
+   ```
+
+4. **Push y PR**
+
+   ```bash
+   git push origin feature/mi-funcionalidad
+   ```
+
+   CI valida: Linting, Tests, Build
+
+5. **Merge a main** → Deploy automático a AWS ✨
+
+---
+
+## 🎯 Próximos Pasos
+
+- [ ] Conectar AuthContext con backend real
+- [ ] Implementar formularios de Login/Register
+- [ ] Instalar react-router-dom para routing
+- [ ] Agregar más tests (cobertura >70%)
+- [ ] Configurar AWS S3 y CloudFront
+- [ ] Implementar manejo de sesiones
+- [ ] Agregar analytics
+
+---
+
+## 📝 Convenciones
+
+### Commits
+
+Usar conventional commits:
+
+- `feat:` Nueva funcionalidad
+- `fix:` Corrección de bug
+- `docs:` Cambios en documentación
+- `refactor:` Refactorización de código
+- `test:` Agregar o modificar tests
+- `chore:` Cambios en build, deps, etc.
+
+### Code Style
+
+- **Formato automático** con Prettier
+- **Linting automático** con ESLint
+- **Imports ordenados** alfabéticamente
+- **TypeScript** para todo el código nuevo
+
+---
+
+## 👥 Autor
+
+Desarrollado como prueba técnica Full-Stack con IA
+
+---
+
+## 📄 Licencia
+
+Uso privado - Prueba técnica
