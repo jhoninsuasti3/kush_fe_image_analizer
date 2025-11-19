@@ -14,17 +14,20 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
-    /* Linting */
+    /* Linting - Gradual strict mode */
     "strict": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": false,
+    "strictNullChecks": false,
 
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/__tests__/**"]
 }
