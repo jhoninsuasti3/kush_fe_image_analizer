@@ -30,9 +30,11 @@ const parseAuthResponse = (payload: AuthApiResponse): AuthResponse => {
     throw new Error('Respuesta inválida: falta access_token');
   }
 
+  // El backend solo devuelve access_token, no devuelve el usuario
+  // Se obtendrá después usando fetchCurrentUser
   return {
     tokens,
-    user: payload.user,
+    user: payload.user, // Será undefined si el backend no lo incluye
   };
 };
 
