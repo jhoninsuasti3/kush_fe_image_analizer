@@ -107,7 +107,7 @@ export const ImageUpload = ({ onImageSelect, selectedImage, onClear }: ImageUplo
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             className={`
-              relative border-2 border-dashed rounded-lg p-8 sm:p-12 text-center transition-all duration-200
+              relative border-2 border-dashed rounded-lg p-6 text-center transition-all duration-200
               ${
                 isDragging
                   ? 'border-primary bg-primary/5 scale-[1.02]'
@@ -126,9 +126,9 @@ export const ImageUpload = ({ onImageSelect, selectedImage, onClear }: ImageUplo
               aria-label="Seleccionar imagen"
             />
 
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-3">
               <div
-                className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
+                className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${
                   isDragging
                     ? 'bg-primary/20'
                     : validationError
@@ -137,21 +137,21 @@ export const ImageUpload = ({ onImageSelect, selectedImage, onClear }: ImageUplo
                 }`}
               >
                 {isValidating ? (
-                  <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+                  <div className="w-6 h-6 border-4 border-primary border-t-transparent rounded-full animate-spin" />
                 ) : validationError ? (
-                  <AlertCircle className="w-8 h-8 text-destructive" />
+                  <AlertCircle className="w-6 h-6 text-destructive" />
                 ) : (
                   <Upload
-                    className={`w-8 h-8 ${isDragging ? 'text-primary animate-bounce' : 'text-primary'}`}
+                    className={`w-6 h-6 ${isDragging ? 'text-primary animate-bounce' : 'text-primary'}`}
                   />
                 )}
               </div>
 
               <div className="max-w-sm">
-                <p className="text-base sm:text-lg font-medium mb-1">
+                <p className="text-sm font-medium mb-1">
                   {isValidating ? 'Validando imagen...' : 'Arrastra una imagen aquí'}
                 </p>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-4">
+                <p className="text-xs text-muted-foreground mb-3">
                   o haz clic para seleccionar un archivo
                 </p>
                 <Button variant="outline" size="sm" asChild disabled={isValidating}>
@@ -162,7 +162,7 @@ export const ImageUpload = ({ onImageSelect, selectedImage, onClear }: ImageUplo
                 </Button>
               </div>
 
-              <div className="text-xs text-muted-foreground space-y-1">
+              <div className="text-xs text-muted-foreground space-y-0.5">
                 <p className="flex items-center justify-center gap-1">
                   <CheckCircle2 className="w-3 h-3" />
                   Formatos: JPG, PNG, GIF, WebP
@@ -196,7 +196,7 @@ export const ImageUpload = ({ onImageSelect, selectedImage, onClear }: ImageUplo
               <img
                 src={preview}
                 alt="Preview de imagen seleccionada"
-                className="w-full h-auto max-h-96 object-contain rounded-t-lg bg-muted/20"
+                className="w-full h-auto max-h-48 object-contain rounded-t-lg bg-muted/20"
               />
               <Button
                 variant="destructive"
@@ -209,7 +209,7 @@ export const ImageUpload = ({ onImageSelect, selectedImage, onClear }: ImageUplo
               </Button>
             </div>
           )}
-          <div className="p-4 bg-muted/50">
+          <div className="p-3 bg-muted/50">
             <p className="text-sm font-medium truncate">{selectedImage.name}</p>
             <p className="text-xs text-muted-foreground">
               {(selectedImage.size / 1024).toFixed(2)} KB

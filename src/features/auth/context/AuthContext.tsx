@@ -1,4 +1,12 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  ReactNode,
+} from 'react';
 
 import { AUTH_STORAGE_KEYS } from '@/features/auth/constants';
 import {
@@ -8,7 +16,7 @@ import {
   registerRequest,
 } from '@/features/auth/services';
 
-import type { AuthResponse, AuthTokens, AuthUser } from '@/features/auth/types';
+import type { AuthTokens, AuthUser } from '@/features/auth/types';
 
 interface AuthContextType {
   user: AuthUser | null;
@@ -80,22 +88,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     bootstrap();
   }, []);
 
-  const handleAuthSuccess = ({ user: authUser, tokens }: AuthResponse) => {
-    persistTokens(tokens);
-    setUser(authUser);
-  };
-
-  const login = async (email: string, password: string) => {
+  const login = useCallback(async (email: string, password: string) => {
     setIsLoading(true);
     try {
       const response = await loginRequest({ email, password });
-      handleAuthSuccess(response);
+      persistTokens(response.tokens);
+
+      // Si el backend no devuelve el usuario, lo obtenemos usando el token
+      if (!response.user) {
+        const currentUser = await fetchCurrentUser(response.tokens.accessToken);
+        setUser(currentUser);
+      } else {
+        setUser(response.user);
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = useCallback(async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
       // Paso 1: Registrar usuario (solo crea el usuario, no devuelve tokens)
@@ -103,28 +114,39 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       // Paso 2: Hacer login automáticamente para obtener tokens
       const loginResponse = await loginRequest({ email, password });
-      handleAuthSuccess(loginResponse);
+      persistTokens(loginResponse.tokens);
+
+      // Si el backend no devuelve el usuario, lo obtenemos usando el token
+      if (!loginResponse.user) {
+        const currentUser = await fetchCurrentUser(loginResponse.tokens.accessToken);
+        setUser(currentUser);
+      } else {
+        setUser(loginResponse.user);
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     const tokens = getStoredTokens();
     clearTokens();
     setUser(null);
     await logoutRequest(tokens?.accessToken).catch(() => undefined);
-  };
+  }, []);
 
-  const value: AuthContextType = {
-    user,
-    isAuthenticated: !!user,
-    isLoading,
-    isInitializing,
-    login,
-    register,
-    logout,
-  };
+  const value: AuthContextType = useMemo(
+    () => ({
+      user,
+      isAuthenticated: !!user,
+      isLoading,
+      isInitializing,
+      login,
+      register,
+      logout,
+    }),
+    [user, isLoading, isInitializing, login, register, logout]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

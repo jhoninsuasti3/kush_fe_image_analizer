@@ -1,7 +1,9 @@
 export interface AuthUser {
-  id: string;
+  id?: string; // Opcional porque algunos backends no lo incluyen
   email: string;
   name: string;
+  is_active?: boolean; // Campo adicional del backend
+  created_at?: string; // Campo adicional del backend
 }
 
 export interface AuthTokens {
@@ -10,7 +12,7 @@ export interface AuthTokens {
 }
 
 export interface AuthResponse {
-  user: AuthUser;
+  user?: AuthUser; // Opcional porque algunos backends no lo incluyen en login
   tokens: AuthTokens;
 }
 
@@ -25,8 +27,9 @@ export interface RegisterPayload extends LoginPayload {
 
 export interface AuthApiResponse {
   access_token: string;
+  token_type?: string; // "bearer"
   refresh_token?: string;
-  user: AuthUser;
+  user?: AuthUser; // Opcional porque el backend no lo incluye en login
   token?: string; // fallback for APIs using token
 }
 

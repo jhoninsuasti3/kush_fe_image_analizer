@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 
+import { AuthProvider } from '@/features/auth';
 import * as api from '@/integrations/imageAnalyzer';
 
 import ImageAnalyzerPage from '../ImageAnalyzerPage';
@@ -31,9 +32,21 @@ jest.spyOn(api, 'analyzeImage').mockImplementation(async () => ({
   analyzed_at: '2025-01-01',
 }));
 
+// Mock fetch for auth
+globalThis.fetch = jest.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve({ email: 'test@test.com', name: 'Test User' }),
+  } as Response)
+);
+
 describe('ImageAnalyzerPage integración', () => {
   it('permite cargar imagen, analizar y mostrar resultado', async () => {
-    render(<ImageAnalyzerPage />);
+    render(
+      <AuthProvider>
+        <ImageAnalyzerPage />
+      </AuthProvider>
+    );
     expect(screen.getByText(/Analizador de Imágenes IA/)).toBeInTheDocument();
     const file = new File(['contenido'], 'test.png', { type: 'image/png' });
     const input = screen.getByLabelText(/Seleccionar Imagen/i);

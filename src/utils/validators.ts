@@ -10,7 +10,9 @@ export const validateImageFile = (file: File): boolean => {
   const validTypes = IMAGE_VALIDATION.ALLOWED_TYPES;
   const maxSize = IMAGE_VALIDATION.MAX_SIZE;
 
-  return validTypes.includes(file.type as (typeof validTypes)[number]) && file.size <= maxSize;
+  return (
+    validTypes.indexOf(file.type as (typeof validTypes)[number]) !== -1 && file.size <= maxSize
+  );
 };
 
 /**
