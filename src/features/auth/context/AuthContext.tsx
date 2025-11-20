@@ -1,124 +1,126 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-/**
- * User interface
- */
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { AUTH_STORAGE_KEYS } from '@/features/auth/constants';
+import {
+  fetchCurrentUser,
+  loginRequest,
+  logoutRequest,
+  registerRequest,
+} from '@/features/auth/services';
 
-/**
- * Auth context interface
- */
+import type { AuthResponse, AuthTokens, AuthUser } from '@/features/auth/types';
+
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isInitializing: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
-/**
- * Auth context
- */
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-/**
- * Auth Provider Props
- */
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-/**
- * Auth Provider Component
- *
- * Manages authentication state globally
- */
+const getStoredTokens = (): AuthTokens | null => {
+  const accessToken = localStorage.getItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN);
+  if (!accessToken) {
+    return null;
+  }
+
+  const refreshToken = localStorage.getItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN);
+
+  return {
+    accessToken,
+    refreshToken: refreshToken || undefined,
+  };
+};
+
+const persistTokens = ({ accessToken, refreshToken }: AuthTokens) => {
+  localStorage.setItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN, accessToken);
+  if (refreshToken) {
+    localStorage.setItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
+  }
+};
+
+const clearTokens = () => {
+  localStorage.removeItem(AUTH_STORAGE_KEYS.ACCESS_TOKEN);
+  localStorage.removeItem(AUTH_STORAGE_KEYS.REFRESH_TOKEN);
+};
+
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
 
-  // Check if user is logged in on mount
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const token = localStorage.getItem('auth_token');
-        if (token) {
-          // TODO: Validate token with backend
-          // const user = await validateToken(token);
-          // setUser(user);
+    const bootstrap = async () => {
+      const tokens = getStoredTokens();
+      if (!tokens?.accessToken) {
+        setIsInitializing(false);
+        return;
+      }
 
-          // For now, just set a mock user
-          setUser({
-            id: '1',
-            email: 'user@example.com',
-            name: 'Usuario',
-          });
-        }
+      try {
+        const currentUser = await fetchCurrentUser(tokens.accessToken);
+        setUser(currentUser);
       } catch (error) {
-        console.error('Auth check failed:', error);
-        localStorage.removeItem('auth_token');
+        console.error('Auth bootstrap failed', error);
+        clearTokens();
+        setUser(null);
       } finally {
-        setIsLoading(false);
+        setIsInitializing(false);
       }
     };
 
-    checkAuth();
+    bootstrap();
   }, []);
 
-  const login = async (email: string, _password: string) => {
+  const handleAuthSuccess = ({ user: authUser, tokens }: AuthResponse) => {
+    persistTokens(tokens);
+    setUser(authUser);
+  };
+
+  const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      // TODO: Call backend API
-      // const response = await authService.login(email, _password);
-      // localStorage.setItem('auth_token', response.token);
-      // setUser(response.user);
-
-      // Mock login for now
-      localStorage.setItem('auth_token', 'mock-token');
-      setUser({
-        id: '1',
-        email,
-        name: 'Usuario',
-      });
+      const response = await loginRequest({ email, password });
+      handleAuthSuccess(response);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const register = async (name: string, email: string, _password: string) => {
+  const register = async (name: string, email: string, password: string) => {
     setIsLoading(true);
     try {
-      // TODO: Call backend API
-      // const response = await authService.register(name, email, _password);
-      // localStorage.setItem('auth_token', response.token);
-      // setUser(response.user);
+      // Paso 1: Registrar usuario (solo crea el usuario, no devuelve tokens)
+      await registerRequest({ name, email, password });
 
-      // Mock register for now
-      localStorage.setItem('auth_token', 'mock-token');
-      setUser({
-        id: '1',
-        email,
-        name,
-      });
+      // Paso 2: Hacer login automáticamente para obtener tokens
+      const loginResponse = await loginRequest({ email, password });
+      handleAuthSuccess(loginResponse);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('auth_token');
+  const logout = async () => {
+    const tokens = getStoredTokens();
+    clearTokens();
     setUser(null);
+    await logoutRequest(tokens?.accessToken).catch(() => undefined);
   };
 
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
     isLoading,
+    isInitializing,
     login,
     register,
     logout,
@@ -127,11 +129,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-/**
- * Hook to use Auth context
- *
- * @throws Error if used outside AuthProvider
- */
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {

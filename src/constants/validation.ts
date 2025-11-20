@@ -22,7 +22,7 @@ export const FORM_VALIDATION = {
   PASSWORD: {
     MIN_LENGTH: 8,
     MAX_LENGTH: 100,
-    PATTERN: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    PATTERN: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-_.,;:#])[A-Za-z\d@$!%*?&\-_.,;:#]{8,}$/,
   },
   NAME: {
     MIN_LENGTH: 2,

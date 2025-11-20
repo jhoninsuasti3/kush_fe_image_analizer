@@ -267,16 +267,6 @@ Los tests están organizados junto al código fuente:
 
 ---
 
-## 🎯 Próximos Pasos
-
-- [ ] Conectar AuthContext con backend real
-- [ ] Implementar formularios de Login/Register
-- [ ] Instalar react-router-dom para routing
-- [ ] Agregar más tests (cobertura >70%)
-- [ ] Configurar AWS S3 y CloudFront
-- [ ] Implementar manejo de sesiones
-- [ ] Agregar analytics
-
 ---
 
 ## 📝 Convenciones

@@ -5,6 +5,27 @@ import * as api from '@/integrations/imageAnalyzer';
 
 import ImageAnalyzerPage from '../ImageAnalyzerPage';
 
+// Mock URL.createObjectURL and revokeObjectURL
+globalThis.URL.createObjectURL = jest.fn(() => 'mock-url');
+globalThis.URL.revokeObjectURL = jest.fn();
+
+// Mock Image constructor para validaciones
+class MockImage {
+  onload: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  src = '';
+  width = 800;
+  height = 600;
+
+  constructor() {
+    setTimeout(() => {
+      if (this.onload) this.onload();
+    }, 0);
+  }
+}
+
+globalThis.Image = MockImage as unknown as typeof Image;
+
 jest.spyOn(api, 'analyzeImage').mockImplementation(async () => ({
   tags: [{ label: 'Integración', confidence: 1.0 }],
   analyzed_at: '2025-01-01',
@@ -17,8 +38,11 @@ describe('ImageAnalyzerPage integración', () => {
     const file = new File(['contenido'], 'test.png', { type: 'image/png' });
     const input = screen.getByLabelText(/Seleccionar Imagen/i);
     fireEvent.change(input, { target: { files: [file] } });
-    const analyzeBtn = await screen.findByText(/Analizar Imagen/);
+
+    // Esperar a que la validación asíncrona termine
+    const analyzeBtn = await screen.findByText(/Analizar Imagen/, {}, { timeout: 3000 });
     fireEvent.click(analyzeBtn);
+
     await waitFor(() => {
       expect(screen.getByText('Integración')).toBeInTheDocument();
     });
