@@ -84,7 +84,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </p>
 
               {/* Show error details in development */}
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {this.state.error && (
                 <div className="space-y-2">
                   <p className="text-xs font-medium text-muted-foreground">
                     Detalles del error (solo en desarrollo):

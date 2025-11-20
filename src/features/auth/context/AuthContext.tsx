@@ -89,22 +89,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    console.log('Login function called');
     setIsLoading(true);
     try {
       const response = await loginRequest({ email, password });
-      console.log('Login successful, response:', response);
       persistTokens(response.tokens);
 
       // Si el backend no devuelve el usuario, lo obtenemos usando el token
       if (!response.user) {
-        console.log('User not in response, fetching current user...');
         const currentUser = await fetchCurrentUser(response.tokens.accessToken);
-        console.log('Fetched current user:', currentUser);
         setUser(currentUser);
       } else {
         setUser(response.user);
-        console.log('User state updated to:', response.user);
       }
     } finally {
       setIsLoading(false);
@@ -112,27 +107,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const register = useCallback(async (name: string, email: string, password: string) => {
-    console.log('Register function called');
     setIsLoading(true);
     try {
       // Paso 1: Registrar usuario (solo crea el usuario, no devuelve tokens)
       await registerRequest({ name, email, password });
-      console.log('Registration successful, now logging in...');
 
       // Paso 2: Hacer login automáticamente para obtener tokens
       const loginResponse = await loginRequest({ email, password });
-      console.log('Auto-login successful, response:', loginResponse);
       persistTokens(loginResponse.tokens);
 
       // Si el backend no devuelve el usuario, lo obtenemos usando el token
       if (!loginResponse.user) {
-        console.log('User not in response, fetching current user...');
         const currentUser = await fetchCurrentUser(loginResponse.tokens.accessToken);
-        console.log('Fetched current user:', currentUser);
         setUser(currentUser);
       } else {
         setUser(loginResponse.user);
-        console.log('User state updated to:', loginResponse.user);
       }
     } finally {
       setIsLoading(false);
