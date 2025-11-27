@@ -1,11 +1,9 @@
 import { LogOut, User } from 'lucide-react';
 import { useState } from 'react';
 
-import { AnalysisResults } from '@/components/AnalysisResults';
-import { ImageUpload } from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/features/auth';
-import { useImageAnalyzer } from '@/hooks/useImageAnalyzer';
+import { AnalysisResults, ImageUpload, useImageAnalyzer } from '@/features/image-analyzer';
 
 const ImageAnalyzerPage = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
