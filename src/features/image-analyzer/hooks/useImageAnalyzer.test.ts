@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 
 import * as api from '@/integrations/imageAnalyzer';
 
-import { useImageAnalyzer } from './useImageAnalyzer';
+import { useImageAnalyzer } from '../useImageAnalyzer';
 
 jest.spyOn(api, 'analyzeImage').mockImplementation(async () => ({
   tags: [{ label: 'TestLabel', confidence: 0.75 }],

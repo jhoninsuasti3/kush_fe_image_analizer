@@ -1,9 +1,8 @@
 import { Sparkles, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
-import { AnalysisResults } from '@/components/AnalysisResults';
-import { ImageUpload } from '@/components/ImageUpload';
 import { Button } from '@/components/ui/button';
+import { AnalysisResults, ImageUpload } from '@/features/image-analyzer';
 import { useToast } from '@/hooks/use-toast';
 
 // URL de tu API backend - configurable mediante variable de entorno
